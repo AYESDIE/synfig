@@ -17,6 +17,8 @@ add_definitions(-DSOUND_DIR="${DATA_PREFIX}/share/synfig/sounds")
 add_definitions(-DPLUGIN_DIR="${DATA_PREFIX}/share/synfig/plugins")
 add_definitions(-DUI_DIR="${DATA_PREFIX}/share/synfig/ui")
 add_definitions(-DLOCALEDIR="${DATA_PREFIX}/share/locale")
+add_definitions(-DCMAKE_BUILD)
+add_definitions(-DCMAKE_BUILD_PATH="${CMAKE_BINARY_DIR}/output")
 
 ##
 ## Targets

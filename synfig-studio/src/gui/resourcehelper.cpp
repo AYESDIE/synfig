@@ -49,10 +49,11 @@ synfig::String studio::ResourceHelper::get_image_path()
 #endif
 
 	std::string imagepath;
-#ifdef _WIN32
-	imagepath=App::get_base_path()+'/'+IMAGE_DIR;
+#ifdef CMAKE_BUILD
+	imagepath=CMAKE_BUILD_PATH;
+	imagepath+="/share/pixmaps/synfigstudio";
 #else
-	imagepath=IMAGE_DIR;
+        imagepath=IMAGE_DIR;
 #endif
 	char* synfig_root=getenv("SYNFIG_ROOT");
 	if(synfig_root) {
@@ -64,6 +65,13 @@ synfig::String studio::ResourceHelper::get_image_path()
 		//  choose this path.
 		imagepath+="/share/pixmaps/synfigstudio";
 	}
+	else {
+#ifdef _WIN32
+        imagepath=App::get_base_path()+'/'+IMAGE_DIR;
+#else
+        imagepath=App::get_base_path()+"/share/pixmaps/synfigstudio";
+#endif
+    }
 	return imagepath;
 }
 
@@ -89,12 +97,20 @@ synfig::String studio::ResourceHelper::get_ui_path()
 #ifdef _WIN32
 	uipath=App::get_base_path()+'/'+UI_DIR;
 #else
-	uipath=UI_DIR;
+#   ifdef CMAKE_BUILD
+        uipath=CMAKE_BUILD_PATH;
+        uipath+="/share/synfig/ui";
+#   else
+        uipath=UI_DIR;
+#   endif
 #endif
 	char* synfig_root=getenv("SYNFIG_ROOT");
 	if(synfig_root) {
 		uipath=synfig_root;
 		uipath+="/share/synfig/ui";
+	}
+	else {
+	    uipath=App::get_base_path()+"/share/synfig/ui";
 	}
 	return uipath;
 }
