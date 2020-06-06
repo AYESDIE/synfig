@@ -244,7 +244,9 @@ About::About()
 	extra_info += etl::strprintf(_("Built on %s" /* at %s */ "\n\n"), __DATE__ /* , __TIME__ */ );
 
 	extra_info += etl::strprintf(_("Built with:\n"));
-	extra_info += etl::strprintf(_("ETL %s\n"), ETL_VERSION);
+	#ifdef ETL_VERSION
+		extra_info += etl::strprintf(_("ETL %s\n"), ETL_VERSION);
+	#endif
 	extra_info += etl::strprintf(_("Synfig API %s\n"), SYNFIG_VERSION);
 	extra_info += etl::strprintf(_("Synfig library %d\n"), SYNFIG_LIBRARY_VERSION);
 	extra_info += etl::strprintf(_("GTK+ %d.%d.%d\n"), GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION);

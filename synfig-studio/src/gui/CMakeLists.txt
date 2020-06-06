@@ -19,6 +19,10 @@ add_definitions(-DUI_DIR="${DATA_PREFIX}/share/synfig/ui")
 add_definitions(-DLOCALEDIR="${DATA_PREFIX}/share/locale")
 add_definitions(-DCMAKE_BUILD)
 
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions(-DSHOW_EXTRA_INFO)
+endif()
+
 ##
 ## Targets
 ##

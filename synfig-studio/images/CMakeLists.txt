@@ -273,3 +273,16 @@ foreach (IMAGE IN ITEMS ${IMAGES})
         DESTINATION share/pixmaps/synfigstudio
     )
 endforeach()
+
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    add_custom_command(
+            TARGET build_images POST_BUILD
+            COMMAND synfig_bin splash_screen_development.sif.in -o ${PIXMAPS_DIR}/splash_screen.png --time 0f -w ${W} -h ${H} --quiet
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${SRC}.sif synfig_bin
+    )
+    install(
+            FILES ${PIXMAPS_DIR}/splash_screen.png
+            DESTINATION share/pixmaps/synfigstudio
+    )
+endif()
