@@ -247,39 +247,64 @@ foreach (ICON IN ITEMS ${ICONS})
     set(IMG_SIZE_${ICON} 32 32)
 endforeach()
 
-foreach (IMAGE IN ITEMS ${IMAGES})
-    if (IMG_SOURCE_${IMAGE})
-        list(GET IMG_SOURCE_${IMAGE} 0 SRC)
-        list(GET IMG_SOURCE_${IMAGE} 1 TIME)
-    else()
-        set(SRC ${IMAGE})
-        set(TIME 0)
-    endif()
-    if (IMG_SIZE_${IMAGE})
-        list(GET IMG_SIZE_${IMAGE} 0 W)
-        list(GET IMG_SIZE_${IMAGE} 1 H)
-    else()
-        set(W 0)
-        set(H 0)
-    endif()
-    add_custom_command(
-        TARGET build_images POST_BUILD
-        COMMAND synfig_bin ${SRC}.sif -o ${PIXMAPS_DIR}/${IMAGE}.png --time ${TIME}f -w ${W} -h ${H} --quiet
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${SRC}.sif synfig_bin
-    )
-    install(
-        FILES ${PIXMAPS_DIR}/${IMAGE}.png
-        DESTINATION share/pixmaps/synfigstudio
-    )
-endforeach()
+#foreach (IMAGE IN ITEMS ${IMAGES})
+#    if (IMG_SOURCE_${IMAGE})
+#        list(GET IMG_SOURCE_${IMAGE} 0 SRC)
+#        list(GET IMG_SOURCE_${IMAGE} 1 TIME)
+#    else()
+#        set(SRC ${IMAGE})
+#        set(TIME 0)
+#    endif()
+#    if (IMG_SIZE_${IMAGE})
+#        list(GET IMG_SIZE_${IMAGE} 0 W)
+#        list(GET IMG_SIZE_${IMAGE} 1 H)
+#    else()
+#        set(W 0)
+#        set(H 0)
+#    endif()
+#    add_custom_command(
+#        TARGET build_images POST_BUILD
+#        COMMAND synfig_bin ${SRC}.sif -o ${PIXMAPS_DIR}/${IMAGE}.png --time ${TIME}f -w ${W} -h ${H} --quiet
+#        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${SRC}.sif synfig_bin
+#    )
+#    install(
+#        FILES ${PIXMAPS_DIR}/${IMAGE}.png
+#        DESTINATION share/pixmaps/synfigstudio
+#    )
+#endforeach()
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
+    execute_process(
+            COMMAND git rev-parse --abbrev-ref HEAD
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            OUTPUT_VARIABLE GIT_BRANCH
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+#    set(SPLASH_SCREEN_OUT splash_screen_development.sif)
+#    file(READ splash_screen_development.sif.in SPLASH_SCREEN)
+#    string(REPLACE "%branch%" "${GIT_BRANCH}" SPLASH_SCREEN ${SPLASH_SCREEN})
+#    string(REPLACE "%commit_date%" "Today" SPLASH_SCREEN ${SPLASH_SCREEN})
+#    string(REPLACE "%commit_id%" "xyz" SPLASH_SCREEN ${SPLASH_SCREEN})
+#    string(REPLACE "logo.sif#" "logo_tmp.sif#" SPLASH_SCREEN ${SPLASH_SCREEN})
+#    file(WRITE ${SPLASH_SCREEN_OUT} ${SPLASH_SCREEN})
+
+    message("${GIT_BRANCH}")
+    message("${GIT_COMMIT_HASH}")
+    message("${__DATE__}")
+
+#    set(DEVELOPMENT_SPLASH_SCREEN splash_screen_development.sif.in)
+
     add_custom_command(
             TARGET build_images POST_BUILD
-            COMMAND synfig_bin splash_screen_development.sif.in -o ${PIXMAPS_DIR}/splash_screen.png --time 0f -w ${W} -h ${H} --quiet
+            COMMAND echo "DEV SPLASH"
+#            COMMAND sed "s|%branch%|${GIT_BRANCH}|" "${CMAKE_CURRENT_SOURCE_DIR}/${DEVELOPMENT_SPLASH_SCREEN}"
+#            COMMAND sed "s|%commit_date%|Today|" "${CMAKE_CURRENT_SOURCE_DIR}/${DEVELOPMENT_SPLASH_SCREEN}"
+#            COMMAND sed "s|%commit_id%|xyz|" "${CMAKE_CURRENT_SOURCE_DIR}/${DEVELOPMENT_SPLASH_SCREEN}"
+#            COMMAND sed --in-place "s|logo.sif#|logo_tmp.sif#|" "${CMAKE_CURRENT_SOURCE_DIR}/${DEVELOPMENT_SPLASH_SCREEN}"
+            COMMAND synfig_bin ${SPLASH_SCREEN_OUT} -o ${PIXMAPS_DIR}/splash_screen.png --time 0f --quiet
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${SRC}.sif synfig_bin
+            DEPENDS ${SPLASH_SCREEN_OUT} synfig_bin
     )
     install(
             FILES ${PIXMAPS_DIR}/splash_screen.png
