@@ -6,6 +6,15 @@
 ## TODO: optional static linking?
 add_library(synfig SHARED "")
 
+if(MSYS_MLT_PREFIX)
+    foreach(MLT_INCLUDE_DIR ${MLT_INCLUDE_DIRS})
+        string(CONCAT MLT_INCLUDE_DIR ${MSYS_MLT_PREFIX} ${MLT_INCLUDE_DIR})
+        list(APPEND _MLT_INCLUDE_DIRS ${MLT_INCLUDE_DIR})
+    endforeach()
+
+    set(MLT_INCLUDE_DIRS ${_MLT_INCLUDE_DIRS})
+endif()
+
 message(STATUS "MLT DIR: ${MLT_INCLUDE_DIRS}")
 
 # By default, the libtool places its headers in the system directory (/usr/local/include), and
