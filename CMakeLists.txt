@@ -29,6 +29,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-inline-functions -fno-i
 message("-- CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 include(SynfigFindGit)
+include(SynfigInstall)
 
 add_subdirectory(ETL)
 include_directories(ETL)

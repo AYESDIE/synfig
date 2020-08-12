@@ -31,8 +31,8 @@ if(WIN32)
         DESTINATION bin
     )
 else()
-    install(
-        TARGETS synfigapp
-        DESTINATION lib
-    )
+SYNFIG_INSTALL(
+    TARGETS synfigapp
+    DESTINATION lib
+)
 endif()
