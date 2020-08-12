@@ -98,3 +98,10 @@ SYNFIG_INSTALL(
     TARGETS synfigstudio
     DESTINATION bin
 )
+
+if(APPLE)
+    install(
+        TARGETS synfigstudio
+        DESTINATION SynfigStudio.app/Contents/MacOS  
+    )
+endif()
