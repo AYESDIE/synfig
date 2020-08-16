@@ -14,30 +14,31 @@ if(APPLE)
         DESTINATION SynfigStudio.app/Contents
     )
 
-    set(OSX_COPY_DIRS
-        bin
-        etc
-        lib
-        share
-    )
-
     set(OSX_PACKAGES
+        atk
+        atkmm
+        cairo
+        glib
+        glibmm
+        gtk+3
+        gtkmm3
         imagemagick
         libxml++
         mlt
         sox
     )
 
-    set(OSX_PREFIX "/usr/local/opt")
+    set(OSX_PREFIX "/usr/local/Cellar")
     
     foreach(OSX_PACKAGE ${OSX_PACKAGES})
-        foreach(OSX_COPY_DIR ${OSX_COPY_DIRS})
-            file(GLOB _OSX_PACKAGE_DIR
-                ${OSX_PREFIX}/${OSX_PACKAGE}/${OSX_COPY_DIR}
-            )
+        file(GLOB _OSX_PACKAGE_DIRS
+            ${OSX_PREFIX}/${OSX_PACKAGE}/*/bin
+            ${OSX_PREFIX}/${OSX_PACKAGE}/*/etc
+            ${OSX_PREFIX}/${OSX_PACKAGE}/*/lib
+            ${OSX_PREFIX}/${OSX_PACKAGE}/*/share
+        )
 
-            install(DIRECTORY ${_OSX_PACKAGE_DIR} DESTINATION SynfigStudio.app/Contents/Resources)
-        endforeach()
+        install(DIRECTORY ${_OSX_PACKAGE_DIRS} DESTINATION SynfigStudio.app/Contents/Resources)
     endforeach()
 
 endif()
