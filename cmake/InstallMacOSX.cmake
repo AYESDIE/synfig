@@ -1,6 +1,11 @@
 if(APPLE && INSTALL_MACOSX_PORTABLE)
     add_executable(SynfigStudio MACOSX_BUNDLE ${CMAKE_SOURCE_DIR}/autobuild/osx/synfig_osx_launcher.cpp)
 
+    install(
+        FILES SynfigStudioa.app
+        DESTINATION .
+    )
+
     # Copy the entire template folder in there.
     install(
         DIRECTORIES ${CMAKE_SOURCE_DIR}/autobuild/osx/app-template/Contents
@@ -8,7 +13,7 @@ if(APPLE && INSTALL_MACOSX_PORTABLE)
     )
 
     set(MAC_PORT "/usr/local/opt")
-    set(APP_CONTENTS SynfigStudio.app/Contents/Resources)
+    set(APP_CONTENTS "\${CMAKE_INSTALL_PREFIX}/SynfigStudio.app/Contents/Resources")
 
     set(OSX_BINARIES
         /ffmpeg/bin/ffmpeg
@@ -33,9 +38,15 @@ if(APPLE && INSTALL_MACOSX_PORTABLE)
         #    OUTPUT 
         #)
 
-        install(
-            FILES ${MAC_PORT}/${OSX_BINARY}
-            DESTINATION ${APP_CONTENTS}/bin
+        add_custom_command(
+            OUTPUT ${APP_CONTENTS}/bin/${OSX_BINARY_NAME}
+            COMMAND ${CMAKE_SOURCE_DIR}/autobuild/osx/relocate-binary.sh ${MAC_PORT}/${OSX_BINARY} ${MAC_PORT} ${APP_CONTENTS}
         )
+
+        list(APPEND OSX_BINARIES_LIST ${APP_CONTENTS}/bin/${OSX_BINARY_NAME})
     endforeach()
+    
+    add_custom_target(fixed_macosx_binary DEPENDS ${OSX_BINARIES_LIST})
+    add_dependency(SynfigStudio fixed_macosx_binary)
+
 endif()
