@@ -19,6 +19,9 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+# Options
+option(INSTALL_MACOSX_PORTABLE "Installs Synfig as a portable app; Needed to build dmg installer." OFF)
+
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fno-inline-functions -fno-inline -g -O0 -Wall")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-inline-functions -fno-inline -g -O0 -Wall")
 
@@ -30,6 +33,10 @@ message("-- CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 include(SynfigFindGit)
 include(SynfigInstall)
+
+if(APPLE && INSTALL_MACOSX_PORTABLE)
+    include(InstallMacOSX)
+endif()
 
 add_subdirectory(ETL)
 include_directories(ETL)

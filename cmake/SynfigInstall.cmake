@@ -1,7 +1,7 @@
 function(synfig_install)
-    set(_files FILES)
-    set(_destination DESTINATION)
+    set(_files FILES)    
     set(_targets TARGETS)
+    set(_destination DESTINATION)
 
     cmake_parse_arguments(
         _parsedArguments
@@ -12,7 +12,7 @@ function(synfig_install)
     )
 
     if(_parsedArguments_FILES)
-        if(APPLE)
+        if(APPLE AND INSTALL_MACOSX_PORTABLE)
             install(FILES ${_parsedArguments_FILES}
                 DESTINATION SynfigStudio.app/Contents/Resources/${_parsedArguments_DESTINATION}
             )
@@ -22,7 +22,7 @@ function(synfig_install)
             )
         endif()
     elseif(_parsedArguments_TARGETS)
-        if(APPLE)
+        if(APPLE AND INSTALL_MACOSX_PORTABLE)
             install(TARGETS ${_parsedArguments_TARGETS}
                 DESTINATION SynfigStudio.app/Contents/Resources/${_parsedArguments_DESTINATION}
             )
