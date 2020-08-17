@@ -32,8 +32,17 @@ if(WIN32)
     configure_file(synfigstudio.rc ${CMAKE_CURRENT_BINARY_DIR}/synfigstudio.rc)
     add_executable(synfigstudio main.cpp ${CMAKE_CURRENT_BINARY_DIR}/synfigstudio.rc)
 else()
-    add_executable(synfigstudio main.cpp)
+    add_executable(synfigstudio MACOSX_BUNDLE main.cpp)
 endif()
+
+# Note Mac specific extension .app
+set(APPS "\${CMAKE_INSTALL_PREFIX}/synfigstudio.app")
+
+# Directories to look for dependencies
+set(DIRS ${CMAKE_BINARY_DIR})
+
+install(CODE "include(BundleUtilities)
+    fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 

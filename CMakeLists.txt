@@ -46,7 +46,7 @@ add_subdirectory(synfig-studio)
 if(WIN32)
     include(InstallMSYS2)
 elseif(APPLE)
-    include(InstallMacOSX)
+    #include(InstallMacOSX)
 endif()
 
 include(CPackConfig)

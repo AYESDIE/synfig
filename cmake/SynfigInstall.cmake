@@ -14,7 +14,7 @@ function(synfig_install)
     if(_parsedArguments_FILES)
         if(APPLE)
             install(FILES ${_parsedArguments_FILES}
-                DESTINATION SynfigStudio.app/Contents/Resources/${_parsedArguments_DESTINATION}
+                DESTINATION ${_parsedArguments_DESTINATION}
             )
         else()
             install(FILES ${_parsedArguments_FILES}
@@ -24,7 +24,7 @@ function(synfig_install)
     elseif(_parsedArguments_TARGETS)
         if(APPLE)
             install(TARGETS ${_parsedArguments_TARGETS}
-                DESTINATION SynfigStudio.app/Contents/Resources/${_parsedArguments_DESTINATION}
+                DESTINATION ${_parsedArguments_DESTINATION}
             )
         else()
             install(TARGETS ${_parsedArguments_TARGETS}
