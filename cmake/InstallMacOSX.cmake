@@ -48,8 +48,28 @@ if(APPLE)
         file(GLOB OSX_LIBRARIES
             ${MAC_PORT}/gdk-pixbuf/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so
 
-            ${MAC_PORT}/librsvg
+            ${MAC_PORT}/librsvg/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so
+            ${MAC_PORT}/librsvg-2.40.20/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so
+
+            ${MAC_PORT}/gtk+3/lib/gtk-3.0/3.0.0/immodules/*.so
+            ${MAC_PORT}/gtk+3/lib/gtk-3.0/3.0.0/printbackends/*.so
+
+            ${MAC_PORT}/cairo/lib/cairo/*.so
+
+            ${MAC_PORT}/mlt/lib/mlt/*.so
         )
+
+        foreach(OSX_LIBRARY ${OSX_LIBRARIES}) 
+            get_filename_component(OSX_LIBRARY_NAME ${MAC_PORT}/${OSX_LIBRARY} NAME) 
+            add_custom_command( 
+                OUTPUT ${SYNFIG_BUILD_ROOT}/lib/${OSX_LIBRARY_NAME}
+                COMMAND ${OSX_RELOCATE_BINARY} ${OSX_LIBRARY} ${MAC_PORT} ${SYNFIG_BUILD_ROOT}
+                DEPENDS ${OSX_LIBRARY}
+            )
+
+            list(APPEND OSX_RELOCATED_BINARIES ${SYNFIG_BUILD_ROOT}/lib/${OSX_LIBRARY_NAME})
+            message(${OSX_LIBRARY_NAME})
+        endforeach()
 
         add_custom_target(relocate_osx_binaries DEPENDS ${OSX_RELOCATED_BINARIES})
         add_dependencies(SynfigStudio relocate_osx_binaries)
