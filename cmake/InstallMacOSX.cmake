@@ -67,10 +67,15 @@ if(APPLE)
             ${MAC_PORT}/cairo/lib/cairo/*.so
 
             ${MAC_PORT}/mlt/lib/mlt/*.so
+
+            ${MAC_PORT}/imagemagick/lib/ImageMagick*/modules-*/coders/*.so
+            ${MAC_PORT}/imagemagick/lib/ImageMagick*/modules-*/filters/*.so
         )
 
+        file(GLOB)
+
         foreach(OSX_LIBRARY ${OSX_LIBRARIES}) 
-            get_filename_component(OSX_LIBRARY_NAME ${MAC_PORT}/${OSX_LIBRARY} NAME) 
+            get_filename_component(OSX_LIBRARY_NAME ${OSX_LIBRARY} NAME) 
             add_custom_command( 
                 OUTPUT ${SYNFIG_BUILD_ROOT}/lib/${OSX_LIBRARY_NAME}
                 COMMAND ${OSX_RELOCATE_BINARY} ${OSX_LIBRARY} ${MAC_PORT} ${SYNFIG_BUILD_ROOT}
@@ -78,8 +83,28 @@ if(APPLE)
             )
 
             list(APPEND OSX_RELOCATED_BINARIES ${SYNFIG_BUILD_ROOT}/lib/${OSX_LIBRARY_NAME})
-            message(${OSX_LIBRARY_NAME})
+            #message(${OSX_LIBRARY_NAME})
         endforeach()
+
+        file(GLOB IMAGEMAGICK_MODULES_CODERS
+            ${MAC_PORT}/imagemagick/lib/ImageMagick*/modules-*/coders/*.so
+        )
+
+        foreach(IMAGEMAGICK_MODULES_CODER ${IMAGEMAGICK_MODULES_CODERS}) 
+            get_filename_component(IMAGEMAGICK_MODULES_CODER_NAME ${IMAGEMAGICK_MODULES_CODER} NAME) 
+            add_custom_command( 
+                OUTPUT ${SYNFIG_BUILD_ROOT}/lib/${IMAGEMAGICK_MODULES_CODER_NAME}
+                COMMAND ${OSX_RELOCATE_BINARY} ${IMAGEMAGICK_MODULES_CODER} ${MAC_PORT} ${SYNFIG_BUILD_ROOT}
+                DEPENDS ${IMAGEMAGICK_MODULES_CODER}
+            )
+
+            list(APPEND OSX_RELOCATED_BINARIES ${SYNFIG_BUILD_ROOT}/lib/${IMAGEMAGICK_MODULES_CODER_NAME})
+            #message(${OSX_LIBRARY_NAME})
+        endforeach()
+
+        file(GLOB IMAGEMAGICK_MODULES_FILTERS
+            ${MAC_PORT}/imagemagick/lib/ImageMagick*/modules-*/coders/*.so
+        )
 
         add_custom_target(relocate_osx_binaries DEPENDS ${OSX_RELOCATED_BINARIES})
         add_dependencies(SynfigStudio relocate_osx_binaries)
