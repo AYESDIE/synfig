@@ -45,16 +45,6 @@ if(APPLE)
             #message(${OSX_RELOCATED_BINARIES})
         endforeach()
 
-        execute_process(
-            COMMAND ls -1d ImageMagick* |head -n 1
-            WORKING_DIRECTORY /
-            OUTPUT_VARIABLE IMAGEMAGICK_DIR
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-
-        message(${IMAGEMAGICK_DIR})
-
-
         file(GLOB OSX_LIBRARIES
             ${MAC_PORT}/gdk-pixbuf/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so
 
@@ -72,8 +62,6 @@ if(APPLE)
             ${MAC_PORT}/imagemagick/lib/ImageMagick*/modules-*/filters/*.so
         )
 
-        file(GLOB)
-
         foreach(OSX_LIBRARY ${OSX_LIBRARIES}) 
             get_filename_component(OSX_LIBRARY_NAME ${OSX_LIBRARY} NAME) 
             add_custom_command( 
@@ -82,31 +70,11 @@ if(APPLE)
                 DEPENDS ${OSX_LIBRARY}
             )
 
-            list(APPEND OSX_RELOCATED_BINARIES ${SYNFIG_BUILD_ROOT}/lib/${OSX_LIBRARY_NAME})
+            list(APPEND OSX_RELOCATED_LIBRARIES ${SYNFIG_BUILD_ROOT}/lib/${OSX_LIBRARY_NAME})
             #message(${OSX_LIBRARY_NAME})
         endforeach()
 
-        file(GLOB IMAGEMAGICK_MODULES_CODERS
-            ${MAC_PORT}/imagemagick/lib/ImageMagick*/modules-*/coders/*.so
-        )
-
-        foreach(IMAGEMAGICK_MODULES_CODER ${IMAGEMAGICK_MODULES_CODERS}) 
-            get_filename_component(IMAGEMAGICK_MODULES_CODER_NAME ${IMAGEMAGICK_MODULES_CODER} NAME) 
-            add_custom_command( 
-                OUTPUT ${SYNFIG_BUILD_ROOT}/lib/${IMAGEMAGICK_MODULES_CODER_NAME}
-                COMMAND ${OSX_RELOCATE_BINARY} ${IMAGEMAGICK_MODULES_CODER} ${MAC_PORT} ${SYNFIG_BUILD_ROOT}
-                DEPENDS ${IMAGEMAGICK_MODULES_CODER}
-            )
-
-            list(APPEND OSX_RELOCATED_BINARIES ${SYNFIG_BUILD_ROOT}/lib/${IMAGEMAGICK_MODULES_CODER_NAME})
-            #message(${OSX_LIBRARY_NAME})
-        endforeach()
-
-        file(GLOB IMAGEMAGICK_MODULES_FILTERS
-            ${MAC_PORT}/imagemagick/lib/ImageMagick*/modules-*/coders/*.so
-        )
-
-        add_custom_target(relocate_osx_binaries DEPENDS ${OSX_RELOCATED_BINARIES})
+        add_custom_target(relocate_osx_binaries DEPENDS ${OSX_RELOCATED_BINARIES} ${OSX_RELOCATED_LIBRARIES})
         add_dependencies(SynfigStudio relocate_osx_binaries)
     endif()
 endif()
