@@ -45,6 +45,16 @@ if(APPLE)
             #message(${OSX_RELOCATED_BINARIES})
         endforeach()
 
+        execute_process(
+            COMMAND ls -1d ImageMagick* |head -n 1
+            WORKING_DIRECTORY /
+            OUTPUT_VARIABLE IMAGEMAGICK_DIR
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+
+        message(${IMAGEMAGICK_DIR})
+
+
         file(GLOB OSX_LIBRARIES
             ${MAC_PORT}/gdk-pixbuf/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so
 
