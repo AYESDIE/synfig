@@ -100,6 +100,7 @@ if(APPLE)
             ${MAC_PORT}/gtk+3/share/themes
 
             /gsettings-desktop-schemas/share/glib-2.0
+            
         
         )
 
