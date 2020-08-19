@@ -17,21 +17,29 @@ if(APPLE)
         set(OSX_RELOCATE_BINARY ${CMAKE_SOURCE_DIR}/autobuild/osx/relocate-binary.sh)
     
         set(OSX_BINARIES 
-            ffmpeg/bin/ffmpeg 
-            ffmpeg/bin/ffprobe 
-    
-            libdv/bin/encodedv 
-            sox/bin/sox 
-    
-            gdk-pixbuf/bin/gdk-pixbuf-query-loaders 
-            gdk-pixbuf/bin/gdk-pixbuf-pixdata 
-            gtk+3/bin/gtk3-demo 
-    
-            mlt/bin/melt 
-            imagemagick/bin/animate 
-            imagemagick/bin/composite 
-            imagemagick/bin/convert 
-        ) 
+            ffmpeg/bin/ffmpeg
+            ffmpeg/bin/ffprobe
+
+            libdv/bin/encodedv
+            sox/bin/sox
+
+            gdk-pixbuf/bin/gdk-pixbuf-query-loaders
+            gdk-pixbuf/bin/gdk-pixbuf-pixdata
+            gtk+3/bin/gtk3-demo
+
+            mlt/bin/melt
+            imagemagick/bin/animate
+            imagemagick/bin/composite
+            imagemagick/bin/convert
+
+            python3/bin/python3
+        )
+
+        file(GLOB PYTHON_FRAMEWORK
+            ${MAC_PORT}/python3/Frameworks/Python.framework/Versions/3.*/Resources/Python.app/Contents/MacOS/Python
+        )
+        string(REPLACE "${MAC_PORT}/" "" PYTHON_FRAMEWORK ${PYTHON_FRAMEWORK})
+        list(APPEND OSX_BINARIES ${PYTHON_FRAMEWORK})
     
         foreach(OSX_BINARY ${OSX_BINARIES}) 
             get_filename_component(OSX_BINARY_NAME ${MAC_PORT}/${OSX_BINARY} NAME) 
@@ -73,6 +81,13 @@ if(APPLE)
             list(APPEND OSX_RELOCATED_LIBRARIES ${SYNFIG_BUILD_ROOT}/lib/${OSX_LIBRARY_NAME})
             #message(${OSX_LIBRARY_NAME})
         endforeach()
+
+        file(GLOB PYTHON_LIBRARY
+            ${MAC_PORT}/python3/Frameworks/Python.framework/Versions/3.*/lib
+        )
+        string(REPLACE "${MAC_PORT}/python3/Frameworks/Python.framework/Versions/" "" PYTHON_VERSION ${PYTHON_LIBRARY})
+        string(REPLACE "/lib" "" PYTHON_VERSION ${PYTHON_VERSION})
+        file(COPY ${PYTHON_LIBRARY} DESTINATION ${SYNFIG_BUILD_ROOT}/Frameworks/Python.framework/Versions/${PYTHON_VERSION})
 
         add_custom_target(relocate_osx_binaries DEPENDS ${OSX_RELOCATED_BINARIES} ${OSX_RELOCATED_LIBRARIES})
         add_dependencies(SynfigStudio relocate_osx_binaries)
