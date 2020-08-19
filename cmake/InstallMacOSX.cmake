@@ -89,6 +89,20 @@ if(APPLE)
         string(REPLACE "/lib" "" PYTHON_VERSION ${PYTHON_VERSION})
         file(COPY ${PYTHON_LIBRARY} DESTINATION ${SYNFIG_BUILD_ROOT}/Frameworks/Python.framework/Versions/${PYTHON_VERSION})
 
+        file(GLOB OSX_SHARES
+            ${MAC_PORT}/gdk-pixbuf/share/gir-1.0
+            ${MAC_PORT}/gdk-pixbuf/share/locale
+
+            ${MAC_PORT}/gtk+3/share/icons
+            ${MAC_PORT}/gtk+3/share/gir-1.0
+            ${MAC_PORT}/gtk+3/share/glib-2.0
+            ${MAC_PORT}/gtk+3/share/locale
+            ${MAC_PORT}/gtk+3/share/themes
+
+            /gsettings-desktop-schemas/share/glib-2.0
+        
+        )
+
         add_custom_target(relocate_osx_binaries DEPENDS ${OSX_RELOCATED_BINARIES} ${OSX_RELOCATED_LIBRARIES})
         add_dependencies(SynfigStudio relocate_osx_binaries)
     endif()
