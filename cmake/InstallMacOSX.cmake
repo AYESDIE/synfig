@@ -5,6 +5,10 @@ if(APPLE)
             COPY ${CMAKE_SOURCE_DIR}/autobuild/osx/app-template/Contents 
             DESTINATION ${CMAKE_BINARY_DIR}/output/SynfigStudio.app
         )
+        install(
+            DIRECTORY ${CMAKE_SOURCE_DIR}/autobuild/osx/app-template/Contents
+            DESTINATION SynfigStudio.app
+        )
 
         add_executable(SynfigStudio ${CMAKE_SOURCE_DIR}/autobuild/osx/synfig_osx_launcher.cpp)
         set_target_properties(SynfigStudio
@@ -116,8 +120,8 @@ if(APPLE)
         add_dependencies(SynfigStudio relocate_osx_binaries)
 
         install(
-            TARGET SynfigStudio
-            DESTINATION .
+            TARGETS SynfigStudio
+            DESTINATION SynfigStudio.app/Contents/MacOS
         )
 
         # Note Mac specific extension .app

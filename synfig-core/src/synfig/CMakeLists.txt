@@ -155,25 +155,38 @@ SYNFIG_INSTALL(
     DESTINATION include/synfig
 )
 
-install(
-    TARGETS synfig
-    EXPORT synfig
-    LIBRARY DESTINATION lib
-)
-
-export(
-    EXPORT synfig
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-config.cmake"
-)
-
-install(
-    EXPORT synfig
-    FILE "${PROJECT_NAME}-config.cmake"
-    DESTINATION "lib/cmake/${PROJECT_NAME}"
-)
-
 if(${MACOSX_PACKAGE})
-    install(TARGETS ${_parsedArguments_TARGETS}
-        DESTINATION SynfigStudio.app/Contents/Resources/${_parsedArguments_DESTINATION}
+    install(
+        TARGETS synfig
+        EXPORT synfig
+        LIBRARY DESTINATION SynfigStudio.app/Contents/Resources/lib
+    )
+
+    export(
+        EXPORT synfig
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-config.cmake"
+    )
+
+    install(
+        EXPORT synfig
+        FILE "${PROJECT_NAME}-config.cmake"
+        DESTINATION "SynfigStudio.app/Contents/Resources/lib/cmake/${PROJECT_NAME}"
+    )
+else()
+    install(
+        TARGETS synfig
+        EXPORT synfig
+        LIBRARY DESTINATION lib
+    )
+
+    export(
+        EXPORT synfig
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}-config.cmake"
+    )
+
+    install(
+        EXPORT synfig
+        FILE "${PROJECT_NAME}-config.cmake"
+        DESTINATION "lib/cmake/${PROJECT_NAME}"
     )
 endif()
