@@ -50,7 +50,6 @@ if(APPLE)
             )
 
             list(APPEND OSX_RELOCATED_BINARIES ${SYNFIG_BUILD_ROOT}/bin/${OSX_BINARY_NAME})
-            #message(${OSX_RELOCATED_BINARIES})
         endforeach()
 
         file(GLOB OSX_LIBRARIES
@@ -99,12 +98,32 @@ if(APPLE)
             ${MAC_PORT}/gtk+3/share/locale
             ${MAC_PORT}/gtk+3/share/themes
 
-            /gsettings-desktop-schemas/share/glib-2.0
-            
-        
-        )
+            ${MAC_PORT}/gsettings-desktop-schemas/share/glib-2.0/share/glib-2.0
+            ${MACPORTS}/hicolor-icon-theme/share/icons
 
+            ${MACPORTS}/glib/share/glib-2.0
+            ${MACPORTS}/glib/share/locale
+            ${MACPORTS}/mlt/share/mlt
+        )
+        file(COPY ${OSX_SHARES} DESTINATION ${SYNFIG_BUILD_ROOT}/share)
+
+        file(GLOB ADWAITA_ICON_THEME
+            ${MACPORTS}/adwaita-icon-theme/share/icons/Adwaita
+        )
+        file(COPY ${ADWAITA_ICON_THEME} DESTINATION ${SYNFIG_BUILD_ROOT}/share/icons)
+        
         add_custom_target(relocate_osx_binaries DEPENDS ${OSX_RELOCATED_BINARIES} ${OSX_RELOCATED_LIBRARIES})
         add_dependencies(SynfigStudio relocate_osx_binaries)
+
+        install(
+            DIRECTORY ${CMAKE_BINARY_DIR}/output/SynfigStudio.app
+            DESTINATION .
+        )
+
+        # Note Mac specific extension .app
+        set(APPS "\${CMAKE_INSTALL_PREFIX}/SynfigStudio.app")
+
+        # Directories to look for dependencies
+        set(DIRS ${CMAKE_BINARY_DIR}output)
     endif()
 endif()
