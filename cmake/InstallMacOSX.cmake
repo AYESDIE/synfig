@@ -139,5 +139,22 @@ if(APPLE)
         
         add_custom_target(relocate_osx_binaries DEPENDS ${OSX_RELOCATED_BINARIES} ${OSX_RELOCATED_LIBRARIES})
         add_dependencies(SynfigStudio relocate_osx_binaries)
+
+        # Relocate Synfig Binary now.
+        file(GLOB OSX_SYNFIG_BINARIES
+            ${SYNFIG_BUILD_ROOT}/bin/synfig*
+            ${SYNFIG_BUILD_ROOT}/lib/libsynfig*.dylib
+            ${SYNFIG_BUILD_ROOT}/lib/synfig/Modules/*.so
+        )
+        
+        foreach(OSX_SYNFIG_BINARY ${OSX_SYNFIG_BINARIES})
+            install(CODE "
+                execute_process(COMMAND ${OSX_RELOCATE_BINARY} ${OSX_SYNFIG_BINARY} ${SYNFIG_BUILD_ROOT} \${CMAKE_INSTALL_PREFIX}/SynfigStudio.app/Contents/Resources)
+            ")
+        endforeach()
+
+        install(CODE "
+            execute_process(COMMAND chmod +x \${CMAKE_INSTALL_PREFIX}/SynfigStudio.app/Contents/MacOS/SynfigStudio.sh)
+        ")
     endif()
 endif()

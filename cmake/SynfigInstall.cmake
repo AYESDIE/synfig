@@ -23,9 +23,7 @@ function(synfig_install)
         endif()
     elseif(_parsedArguments_TARGETS)
         if(${MACOSX_PACKAGE})
-            install(TARGETS ${_parsedArguments_TARGETS}
-                DESTINATION SynfigStudio.app/Contents/Resources/${_parsedArguments_DESTINATION}
-            )
+            
         else()
             install(TARGETS ${_parsedArguments_TARGETS}
                 DESTINATION ${_parsedArguments_DESTINATION}
