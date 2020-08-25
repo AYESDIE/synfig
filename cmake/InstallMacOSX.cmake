@@ -15,7 +15,6 @@ if(APPLE)
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output/SynfigStudio.app/Contents/MacOS
         )
-
         install(
             TARGETS SynfigStudio
             DESTINATION SynfigStudio.app/Contents/MacOS
@@ -42,7 +41,6 @@ if(APPLE)
 
             python3/bin/python3
         )
-
         file(GLOB PYTHON_FRAMEWORK
             ${MAC_PORT}/python3/Frameworks/Python.framework/Versions/3.*/Resources/Python.app/Contents/MacOS/Python
         )

@@ -23,7 +23,7 @@ function(synfig_install)
         endif()
     elseif(_parsedArguments_TARGETS)
         if(${MACOSX_PACKAGE})
-            
+            # We do nothing for this case because we handle this using relocate_binary.sh            
         else()
             install(TARGETS ${_parsedArguments_TARGETS}
                 DESTINATION ${_parsedArguments_DESTINATION}
