@@ -116,7 +116,7 @@ if(APPLE)
         add_dependencies(SynfigStudio relocate_osx_binaries)
 
         install(
-            DIRECTORY ${CMAKE_BINARY_DIR}/output/SynfigStudio.app
+            TARGET SynfigStudio
             DESTINATION .
         )
 

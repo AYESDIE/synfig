@@ -150,7 +150,7 @@ target_link_libraries(synfig
 ## TODO: find a better way to do that, maybe?
 file(GLOB SYNFIG_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h")
 
-install(
+SYNFIG_INSTALL(
     FILES ${SYNFIG_HEADERS}
     DESTINATION include/synfig
 )
@@ -171,3 +171,9 @@ install(
     FILE "${PROJECT_NAME}-config.cmake"
     DESTINATION "lib/cmake/${PROJECT_NAME}"
 )
+
+if(${MACOSX_PACKAGE})
+    install(TARGETS ${_parsedArguments_TARGETS}
+        DESTINATION SynfigStudio.app/Contents/Resources/${_parsedArguments_DESTINATION}
+    )
+endif()
